@@ -2,7 +2,7 @@
  A Unity Game to learn the basics of the Unity Game Engine
  
 ## Download
-<a href="https://ellisya.itch.io/fox-runner-test-build" target="_blank"> Fox Runner </a>
+<a href="https://ellisya.itch.io/fox-runner" target="_blank"> Fox Runner </a>
 <br>
 
 ## Screenshots
