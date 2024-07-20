@@ -51,6 +51,7 @@ public class SFXManager : MonoBehaviour {
     }
 
     public float LoadVolume() {
-        return volume = PlayerPrefs.GetFloat(PLAYER_PREFS_SFX_VOLUME, 1f);
+        volume = PlayerPrefs.GetFloat(PLAYER_PREFS_SFX_VOLUME, 1f);
+        return volume;
     }
 }

@@ -36,8 +36,14 @@ public class SettingsManager : MonoBehaviour {
     private int initialResolutionIndex;
     private int initialWindowTypeIndex;
 
+    private float referenceResolutionWidth = 1920f;
+    private float referenceResolutionHeight = 1080f;
+    private float matchWidthOrHeight = 0.5f;
+
     private int defaultResolutionIndex;
     private int defaultWindowTypeIndex = 0;
+
+
 
     private bool hasSettingChanges = false;
 
@@ -128,6 +134,7 @@ public class SettingsManager : MonoBehaviour {
         resolution = Screen.resolutions[resolutionDropdowm.value];
         windowType = GetWindowTypeMode(windowTypeDropdown.value);
         Screen.SetResolution(resolution.width, resolution.height, windowType);
+        AdjustUIScaling();
     }
 
     private FullScreenMode GetWindowTypeMode(int index) {
@@ -136,7 +143,7 @@ public class SettingsManager : MonoBehaviour {
             case 1: return FullScreenMode.FullScreenWindow;
             case 2: return FullScreenMode.Windowed;
             default: return FullScreenMode.ExclusiveFullScreen;
-       }
+        }
     }
 
     public void ResetToDefault() {
@@ -151,6 +158,19 @@ public class SettingsManager : MonoBehaviour {
         windowTypeDropdown.value = defaultWindowTypeIndex;
 
         ApplySettings();
+    }
+
+    private void AdjustUIScaling() {
+        CanvasScaler canvasScaler = FindObjectOfType<CanvasScaler>();
+
+        if (canvasScaler != null) {
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            canvasScaler.referenceResolution = new Vector2(referenceResolutionWidth, referenceResolutionHeight);
+            canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            canvasScaler.matchWidthOrHeight = matchWidthOrHeight;
+        } else {
+            Debug.Log("CanvasScaler not Found");
+        }
     }
 
     private void PopulateResolutionDropdown() {
@@ -205,10 +225,13 @@ public class SettingsManager : MonoBehaviour {
     }
 
     public void CancelSettings() {
-        hasSettingChanges = false ;
+        hasSettingChanges = false;
 
         musicVolume = initialMusicVolume;
+        MusicManager.Instance.ChangeVolume(musicVolume);
+
         sfxVolume = initialSFXVolume;
+        SFXManager.Instance.ChangeVolume(sfxVolume);
 
         musicScrollBar.value = musicVolume;
         sfxScrollBar.value = sfxVolume;
@@ -216,7 +239,7 @@ public class SettingsManager : MonoBehaviour {
         musicInputField.text = (musicVolume * 100).ToString("F0");
         sfxInputField.text = (sfxVolume * 100).ToString("F0");
 
-        HideApplyCancelButton() ;
+        HideApplyCancelButton();
     }
 
     private void ShowApplyCancelButton() {
