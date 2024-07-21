@@ -11,6 +11,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Button playButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button aboutButton;
 
 
     private void Awake() {
@@ -28,6 +29,10 @@ public class MainMenuUI : MonoBehaviour {
 
         quitButton.onClick.AddListener(() => {
             Application.Quit();
+        });
+
+        aboutButton.onClick.AddListener(() => { 
+            AboutUI.Instance.Show();
         });
 
         Time.timeScale = 1f;
